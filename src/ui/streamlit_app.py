@@ -16,8 +16,8 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for Apple-inspired design
-st.markdown("""
+# Custom CSS for Apple-inspired design - Force load with st.html
+st.html("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -218,7 +218,7 @@ header {visibility: hidden !important;}
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 </style>
-""", unsafe_allow_html=True)
+""")
 
 def load_dialect_samples() -> Dict[str, str]:
     """Load dialect samples"""
@@ -252,10 +252,8 @@ def simple_similarity_score(text1: str, text2: str) -> float:
     Simple similarity calculation using word overlap
     This is a placeholder until we implement OpenAI embeddings
     """
-    # Convert to lowercase and split into words
     words1 = set(text1.lower().split())
     words2 = set(text2.lower().split())
-    # Calculate Jaccard similarity (intersection over union)
     intersection = len(words1.intersection(words2))
     union = len(words1.union(words2))
     return intersection / union if union > 0 else 0.0
@@ -356,10 +354,10 @@ def run_app():
         st.markdown("*Any text that represents how you naturally express yourself—emails, social posts, journal entries, or thoughts*")
         
         user_text = st.text_area(
-            "",
+            "Text Input",
             height=150,
             placeholder="Paste your writing here... The more authentic to your voice, the more revealing the analysis will be.",
-            label_visibility="collapsed"
+            label_visibility="hidden"
         )
         
         analyze_button = st.button("🧠 Reveal My Influences", type="primary")
