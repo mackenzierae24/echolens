@@ -13,6 +13,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 from config.settings import get_config
 from src.analyzer import create_embeddings_manager, PatternAnalyzer
+from src.analyzer.embeddings import get_openai_embedding, compute_similarity
 
 # Configure page with Apple-inspired styling
 st.set_page_config(
@@ -468,16 +469,54 @@ def load_dialect_samples() -> Dict[str, str]:
     
     return samples
 
+""" Old way to analyze similarity just based on word overlap """
+# def simple_similarity_score(text1: str, text2: str) -> float:
+#     """
+#     Simple similarity calculation using word overlap
+#     This is a placeholder until we implement OpenAI embeddings
+#     """
+#     words1 = set(text1.lower().split())
+#     words2 = set(text2.lower().split())
+#     intersection = len(words1.intersection(words2))
+#     union = len(words1.union(words2))
+#     return intersection / union if union > 0 else 0.0
+
+# def analyze_text_patterns(user_text: str, dialects: Dict[str, str]) -> Dict[str, float]:
+#     """Analyze user text against dialect samples"""
+#     if len(user_text.strip()) < 10:
+#         return {}
+#     scores = {}
+#     for dialect_name, dialect_text in dialects.items():
+#         score = simple_similarity_score(user_text, dialect_text)
+#         scores[dialect_name] = score
+#     return scores
+
 def simple_similarity_score(text1: str, text2: str) -> float:
     """
-    Simple similarity calculation using word overlap
-    This is a placeholder until we implement OpenAI embeddings
-    """
-    words1 = set(text1.lower().split())
-    words2 = set(text2.lower().split())
-    intersection = len(words1.intersection(words2))
-    union = len(words1.union(words2))
-    return intersection / union if union > 0 else 0.0
+     Advanced similarity calculation using word overlap
+     with embeddings
+     """
+    try:
+        emb1 = get_openai_embedding(text1) # The user's input text is converted into a vector representing its overall meaning.
+        emb2 = get_openai_embedding(text2) # The sample text for a specific dialect is converted into its meaning vector.
+        return compute_similarity(emb1, emb2)
+        """
+        If both embeddings are successfully created, it then calculates the similarity between these two embeddings. 
+        This is often done using a measure like cosine similarity, 
+        which determines how similar the directions of the two vectors are. 
+        A higher score (closer to 1.0) means higher similarity, while a score closer to 0.0 means less similarity.
+        """
+    except:
+        """
+        If the embeddings advanced method encounters an issue, 
+        it falls back to a simpler, more direct lexical comparison: 
+        how many words do the two texts have in common relative to their total unique words?
+        """
+        words1 = set(text1.lower().split())
+        words2 = set(text2.lower().split())
+        intersection = len(words1.intersection(words2))
+        union = len(words1.union(words2))
+        return intersection / union if union > 0 else 0.0
 
 def analyze_text_patterns(user_text: str, dialects: Dict[str, str]) -> Dict[str, float]:
     """Analyze user text against dialect samples"""
