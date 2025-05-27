@@ -2,20 +2,30 @@
 EchoLens Configuration Settings
 """
 import os
+import streamlit as st
 from dotenv import load_dotenv
 
-# Load environment variables
+# Load environment variables for local development
 load_dotenv()
 
+# Function to get config values from either environment or Streamlit secrets
+def get_config(key, default=None):
+    try:
+        # Try Streamlit secrets first (for deployed app)
+        return st.secrets[key]
+    except:
+        # Fall back to environment variables (for local development)
+        return os.getenv(key, default)
+
 # OpenAI Configuration
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-EMBEDDING_MODEL = os.getenv('EMBEDDING_MODEL', 'text-embedding-3-small')
-GPT_MODEL = os.getenv('GPT_MODEL', 'gpt-4')
-MAX_TOKENS = int(os.getenv('MAX_TOKENS', 4000))
+OPENAI_API_KEY = get_config('OPENAI_API_KEY')
+EMBEDDING_MODEL = get_config('EMBEDDING_MODEL', 'text-embedding-3-small')
+GPT_MODEL = get_config('GPT_MODEL', 'gpt-4')
+MAX_TOKENS = int(get_config('MAX_TOKENS', 4000))
 
 # App Configuration
-DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
-LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
+DEBUG = get_config('DEBUG', 'False').lower() == 'true'
+LOG_LEVEL = get_config('LOG_LEVEL', 'INFO')
 
 # Paths
 DATA_DIR = 'data'
