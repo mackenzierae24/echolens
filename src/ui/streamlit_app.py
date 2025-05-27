@@ -8,6 +8,12 @@ import pandas as pd
 import time
 from typing import Dict, List, Tuple
 
+# Add project root to path for imports
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+
+from config.settings import get_config
+from src.analyzer import create_embeddings_manager, PatternAnalyzer
+
 # Configure page with Apple-inspired styling
 st.set_page_config(
     page_title="EchoLens",
@@ -415,6 +421,26 @@ def load_css():
 # Load CSS immediately
 load_css()
 
+@st.cache_resource
+def initialize_embeddings_manager():
+    """Initialize embeddings manager with caching"""
+    try:
+        api_key = get_config('OPENAI_API_KEY')
+        if not api_key:
+            st.error("⚠️ OpenAI API key not found. Please check your configuration.")
+            return None
+        
+        embeddings_manager = create_embeddings_manager(api_key)
+        if embeddings_manager:
+            st.success("🤖 AI-powered analysis enabled!")
+            return embeddings_manager
+        else:
+            st.warning("⚠️ Failed to initialize AI analysis. Using basic word matching.")
+            return None
+    except Exception as e:
+        st.error(f"❌ Error initializing AI: {str(e)}")
+        return None
+
 def load_dialect_samples() -> Dict[str, str]:
     """Load dialect samples"""
     samples = {}
@@ -466,6 +492,12 @@ def analyze_text_patterns(user_text: str, dialects: Dict[str, str]) -> Dict[str,
 def run_app():
     # Reload CSS to ensure it's applied
     load_css()
+
+    # Initialize embeddings manager
+    embeddings_manager = initialize_embeddings_manager()
+    
+    # Create analyzer
+    analyzer = PatternAnalyzer(embeddings_manager)
     
     # Hero Section
     st.markdown("""
@@ -474,6 +506,18 @@ def run_app():
         <div class="hero-subtitle">
             Discover the hidden influences shaping how you think, speak, and see reality
         </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # System Status Indicator
+    if embeddings_manager:
+        status_html = '<span class="status-indicator status-embeddings">🤖 AI Analysis Active</span>'
+    else:
+        status_html = '<span class="status-indicator status-fallback">📝 Basic Analysis</span>'
+    
+    st.markdown(f"""
+    <div style="text-align: center; margin: 1rem 0;">
+        Analysis Mode: {status_html}
     </div>
     """, unsafe_allow_html=True)
     
@@ -567,15 +611,19 @@ def run_app():
         for name in dialects.keys():
             st.markdown(f"• **{name}**")
     
-    # Analysis Results
+   # Analysis Results
     if analyze_button and user_text:
         if len(user_text.strip()) < 50:
             st.warning("⚠️ Please enter at least 50 characters for meaningful analysis.")
         else:
-            # Loading animation
-            with st.spinner("🔍 Analyzing your linguistic DNA..."):
+            # Loading animation with dynamic message
+            analysis_method = "AI-powered semantic analysis" if embeddings_manager else "pattern matching analysis"
+            with st.spinner(f"🔍 Running {analysis_method}..."):
                 time.sleep(1)  # Dramatic pause for effect
-                scores = analyze_text_patterns(user_text, dialects)
+                
+                # Run analysis
+                scores = analyzer.analyze_text(user_text)
+                detailed_analysis = analyzer.get_detailed_analysis(user_text, scores)
                 
                 if scores:
                     sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
@@ -587,37 +635,26 @@ def run_app():
                     </div>
                     """, unsafe_allow_html=True)
                     
-                    # Key Metrics
-                    col1, col2, col3 = st.columns(3)
+                    # Analysis method indicator
+                    method_text = detailed_analysis.get('analysis_method', 'unknown')
+                    if method_text == 'embeddings':
+                        method_display = "🤖 AI Semantic Analysis"
+                        method_color = "#10b981"
+                    else:
+                        method_display = "📝 Word Pattern Analysis"  
+                        method_color = "#f59e0b"
                     
-                    with col1:
-                        st.markdown(f"""
-                        <div class="metric-container">
-                            <h3 style="color: #667eea; margin: 0;">Primary Echo</h3>
-                            <h2 style="margin: 0.5rem 0;">{top_dialect}</h2>
-                            <p style="color: #666; margin: 0;">{top_score:.1%} similarity</p>
-                        </div>
-                        """, unsafe_allow_html=True)
+                    st.markdown(f"""
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <span style="color: {method_color}; font-weight: 600; font-size: 0.9rem;">
+                            {method_display}
+                        </span>
+                    </div>
+                    """, unsafe_allow_html=True)
                     
-                    with col2:
-                        avg_score = sum(scores.values()) / len(scores)
-                        st.markdown(f"""
-                        <div class="metric-container">
-                            <h3 style="color: #667eea; margin: 0;">Average Match</h3>
-                            <h2 style="margin: 0.5rem 0;">{avg_score:.1%}</h2>
-                            <p style="color: #666; margin: 0;">across all patterns</p>
-                        </div>
-                        """, unsafe_allow_html=True)
-                    
-                    with col3:
-                        uniqueness = 100 - (top_score * 100)
-                        st.markdown(f"""
-                        <div class="metric-container">
-                            <h3 style="color: #667eea; margin: 0;">Uniqueness</h3>
-                            <h2 style="margin: 0.5rem 0;">{uniqueness:.0f}%</h2>
-                            <p style="color: #666; margin: 0;">distinctly you</p>
-                        </div>
-                        """, unsafe_allow_html=True)
+                    # Use existing metrics and analysis display code but replace:
+                    # detailed_analysis.get('avg_score', 0) instead of sum(scores.values()) / len(scores)
+                    # detailed_analysis.get('uniqueness', 0) instead of 100 - (top_score * 100)
                     
                     # Detailed Analysis
                     st.markdown('<h4 style="color: #1d1d1f; font-weight: 600; margin: 2rem 0 1rem 0;">Your Influence Breakdown</h4>', unsafe_allow_html=True)
