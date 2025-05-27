@@ -1,4 +1,61 @@
-"""
+/* Dialect samples styling */
+    .dialect-preview {
+        background: rgba(102, 126, 234, 0.05);
+        border-left: 4px solid #667eea;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+    }
+    
+    /* Fade in animation */
+    .fade-in {
+        animation: fadeIn 0.8s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Progress bar styling */
+    .progress-container {
+        background: #f0f0f0;
+        border-radius: 10px;
+        height: 8px;
+        margin: 0.5rem 0;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        height: 100%;
+        border-radius: 10px;
+        transition: width 1s ease;
+    }
+    
+    /* Button styling - force retention */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 0.75rem 2rem !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
+        width: 100% !important;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5) !important;
+    }
+    
+    /* Force typography to stay consistent */
+    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4 {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    }"""
 EchoLens - Analyzes text for ideological and linguistic patterns
 """
 import streamlit as st
@@ -22,22 +79,30 @@ st.markdown("""
     /* Import SF Pro Display font (Apple's font) */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     
-    /* Global styling */
+    /* Global styling - Force override */
     .stApp {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        min-height: 100vh !important;
     }
     
-    /* Hide default Streamlit elements */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
+    /* Force container styling */
+    .main .block-container {
+        background: transparent !important;
+        padding-top: 2rem !important;
+    }
     
-    /* Hero section styling */
+    /* Hide default Streamlit elements - stronger selectors */
+    #MainMenu {visibility: hidden !important;}
+    footer {visibility: hidden !important;}
+    header {visibility: hidden !important;}
+    .stDeployButton {visibility: hidden !important;}
+    
+    /* Hero section styling - ensure it stays styled */
     .hero-container {
         text-align: center;
         padding: 4rem 2rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         border-radius: 24px;
         margin: 2rem 0;
         color: white;
@@ -63,10 +128,10 @@ st.markdown("""
         line-height: 1.5;
     }
     
-    /* Why section styling */
+    /* Why section styling - force retention */
     .why-section {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.9) !important;
+        backdrop-filter: blur(20px) !important;
         border-radius: 20px;
         padding: 3rem;
         margin: 2rem 0;
@@ -91,10 +156,10 @@ st.markdown("""
         margin: 0 auto 2rem;
     }
     
-    /* Card styling */
+    /* Card styling - force retention */
     .insight-card {
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.8) !important;
+        backdrop-filter: blur(20px) !important;
         border-radius: 16px;
         padding: 2rem;
         margin: 1rem 0;
@@ -128,10 +193,10 @@ st.markdown("""
         line-height: 1.6;
     }
     
-    /* Input section styling */
+    /* Input section styling - force retention */
     .input-section {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.9) !important;
+        backdrop-filter: blur(20px) !important;
         border-radius: 20px;
         padding: 2.5rem;
         margin: 2rem 0;
