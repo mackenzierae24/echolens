@@ -662,7 +662,7 @@ def run_app():
                 
                 # Run analysis
                 scores = analyzer.analyze_text(user_text)
-                detailed_analysis = analyzer.get_detailed_analysis(user_text, scores)
+                detailed_analysis = analyzer.get_detailed_analysis(user_text, method_used)
                 
                 if scores:
                     sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
