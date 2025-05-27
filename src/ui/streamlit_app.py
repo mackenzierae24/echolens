@@ -501,7 +501,7 @@ def simple_similarity_score(text1: str, text2: str) -> float:
             emb1 = manager.get_embedding(text1) # The user's input text is converted into a vector representing its overall meaning.
             emb2 = manager.get_embedding(text2) # The sample text for a specific dialect is converted into its meaning vector.
             sim = manager.compute_similarity(emb1, emb2) 
-             """
+            """
             If both embeddings are successfully created, it then calculates the similarity between these two embeddings. 
             This is often done using a measure like cosine similarity, 
             which determines how similar the directions of the two vectors are. 
