@@ -532,10 +532,7 @@ def analyze_text_patterns(user_text: str, dialects: Dict[str, str], manager=None
     return scores
 
 # In your run_app, pass embeddings_manager to analyze_text_patterns where needed
-if __name__ == "__main__":
-    run_app()
-
-
+def run_app():
     # Reload CSS to ensure it's applied
     load_css()
 
