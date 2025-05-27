@@ -833,4 +833,3 @@ def run_app():
 # This is typically in main.py, but if streamlit_app.py is run directly:
 if __name__ == "__main__":
     run_app()
-```
