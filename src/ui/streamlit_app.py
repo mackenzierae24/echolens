@@ -154,7 +154,7 @@ st.markdown("""
         text-align: center;
     }
 
-    /* Button styling */
+    /* Button styling - force retention (SINGLE VERSION) */
     .stButton > button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         color: white !important;
@@ -173,7 +173,7 @@ st.markdown("""
         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5) !important;
     }
 
-     /* Metric styling */
+    /* Metric styling - force retention */
     .metric-container {
         background: rgba(255, 255, 255, 0.8) !important;
         backdrop-filter: blur(20px) !important;
@@ -184,7 +184,7 @@ st.markdown("""
         border: 1px solid rgba(255,255,255,0.3);
     }
 
-    /* Results styling */
+    /* Results styling - force retention */
     .results-section {
         background: rgba(255, 255, 255, 0.95) !important;
         backdrop-filter: blur(20px) !important;
@@ -228,25 +228,6 @@ st.markdown("""
         height: 100%;
         border-radius: 10px;
         transition: width 1s ease;
-    }
-    
-    /* Button styling - force retention */
-    .stButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 12px !important;
-        padding: 0.75rem 2rem !important;
-        font-size: 1.1rem !important;
-        font-weight: 600 !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
-        width: 100% !important;
-    }
-    
-    .stButton > button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5) !important;
     }
     
     /* Force typography to stay consistent */
