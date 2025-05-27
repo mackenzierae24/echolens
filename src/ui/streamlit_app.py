@@ -1,4 +1,201 @@
-/* Dialect samples styling */
+"""
+EchoLens - Analyzes text for ideological and linguistic patterns
+"""
+import streamlit as st
+import os
+import sys
+import pandas as pd
+import time
+from typing import Dict, List, Tuple
+
+# Configure page with Apple-inspired styling
+st.set_page_config(
+    page_title="EchoLens",
+    page_icon="🧠",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
+
+# Custom CSS for Apple-inspired design
+st.markdown("""
+<style>
+    /* Import SF Pro Display font (Apple's font) */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    /* Global styling - Force override */
+    .stApp {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        min-height: 100vh !important;
+    }
+
+    /* Force container styling */
+    .main .block-container {
+        background: transparent !important;
+        padding-top: 2rem !important;
+    }
+
+    /* Hide default Streamlit elements - stronger selectors */
+    #MainMenu {visibility: hidden !important;}
+    footer {visibility: hidden !important;}
+    header {visibility: hidden !important;}
+    .stDeployButton {visibility: hidden !important;}
+
+    /* Hero section styling - ensure it stays styled */
+    .hero-container {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        border-radius: 24px;
+        margin: 2rem 0;
+        color: white;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        letter-spacing: -0.02em;
+        background: linear-gradient(45deg, #fff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.4rem;
+        font-weight: 400;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        line-height: 1.5;
+    }
+
+    /* Why section styling - force retention */
+    .why-section {
+        background: rgba(255, 255, 255, 0.9) !important;
+        backdrop-filter: blur(20px) !important;
+        border-radius: 20px;
+        padding: 3rem;
+        margin: 2rem 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .why-title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #1d1d1f;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    
+    .why-text {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #424245;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 2rem;
+    }
+
+    /* Card styling - force retention */
+    .insight-card {
+        background: rgba(255, 255, 255, 0.8) !important;
+        backdrop-filter: blur(20px) !important;
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 1rem 0;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        border: 1px solid rgba(255,255,255,0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .insight-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+    }
+    
+    .insight-number {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #667eea;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+    
+    .insight-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #1d1d1f;
+        margin-bottom: 0.5rem;
+    }
+    
+    .insight-text {
+        color: #515154;
+        line-height: 1.6;
+    }
+
+    /* Input section styling - force retention */
+    .input-section {
+        background: rgba(255, 255, 255, 0.9) !important;
+        backdrop-filter: blur(20px) !important;
+        border-radius: 20px;
+        padding: 2.5rem;
+        margin: 2rem 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .section-title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #1d1d1f;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    /* Button styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 0.75rem 2rem !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
+        width: 100% !important;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5) !important;
+    }
+
+     /* Metric styling */
+    .metric-container {
+        background: rgba(255, 255, 255, 0.8) !important;
+        backdrop-filter: blur(20px) !important;
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    /* Results styling */
+    .results-section {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(20px) !important;
+        border-radius: 20px;
+        padding: 2.5rem;
+        margin: 2rem 0;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    /* Dialect samples styling */
     .dialect-preview {
         background: rgba(102, 126, 234, 0.05);
         border-left: 4px solid #667eea;
@@ -55,236 +252,6 @@
     /* Force typography to stay consistent */
     .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4 {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    }"""
-EchoLens - Analyzes text for ideological and linguistic patterns
-"""
-import streamlit as st
-import os
-import sys
-import pandas as pd
-import time
-from typing import Dict, List, Tuple
-
-# Configure page with Apple-inspired styling
-st.set_page_config(
-    page_title="EchoLens",
-    page_icon="🧠",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
-
-# Custom CSS for Apple-inspired design
-st.markdown("""
-<style>
-    /* Import SF Pro Display font (Apple's font) */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    
-    /* Global styling - Force override */
-    .stApp {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-        min-height: 100vh !important;
-    }
-    
-    /* Force container styling */
-    .main .block-container {
-        background: transparent !important;
-        padding-top: 2rem !important;
-    }
-    
-    /* Hide default Streamlit elements - stronger selectors */
-    #MainMenu {visibility: hidden !important;}
-    footer {visibility: hidden !important;}
-    header {visibility: hidden !important;}
-    .stDeployButton {visibility: hidden !important;}
-    
-    /* Hero section styling - ensure it stays styled */
-    .hero-container {
-        text-align: center;
-        padding: 4rem 2rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        border-radius: 24px;
-        margin: 2rem 0;
-        color: white;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    }
-    
-    .hero-title {
-        font-size: 3.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        letter-spacing: -0.02em;
-        background: linear-gradient(45deg, #fff, #e0e7ff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.4rem;
-        font-weight: 400;
-        opacity: 0.9;
-        margin-bottom: 2rem;
-        line-height: 1.5;
-    }
-    
-    /* Why section styling - force retention */
-    .why-section {
-        background: rgba(255, 255, 255, 0.9) !important;
-        backdrop-filter: blur(20px) !important;
-        border-radius: 20px;
-        padding: 3rem;
-        margin: 2rem 0;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        border: 1px solid rgba(255,255,255,0.2);
-    }
-    
-    .why-title {
-        font-size: 2.5rem;
-        font-weight: 600;
-        color: #1d1d1f;
-        margin-bottom: 1.5rem;
-        text-align: center;
-    }
-    
-    .why-text {
-        font-size: 1.1rem;
-        line-height: 1.7;
-        color: #424245;
-        text-align: center;
-        max-width: 800px;
-        margin: 0 auto 2rem;
-    }
-    
-    /* Card styling - force retention */
-    .insight-card {
-        background: rgba(255, 255, 255, 0.8) !important;
-        backdrop-filter: blur(20px) !important;
-        border-radius: 16px;
-        padding: 2rem;
-        margin: 1rem 0;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-        border: 1px solid rgba(255,255,255,0.3);
-        transition: all 0.3s ease;
-    }
-    
-    .insight-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 35px rgba(0,0,0,0.12);
-    }
-    
-    .insight-number {
-        font-size: 3rem;
-        font-weight: 700;
-        color: #667eea;
-        line-height: 1;
-        margin-bottom: 0.5rem;
-    }
-    
-    .insight-title {
-        font-size: 1.3rem;
-        font-weight: 600;
-        color: #1d1d1f;
-        margin-bottom: 0.5rem;
-    }
-    
-    .insight-text {
-        color: #515154;
-        line-height: 1.6;
-    }
-    
-    /* Input section styling - force retention */
-    .input-section {
-        background: rgba(255, 255, 255, 0.9) !important;
-        backdrop-filter: blur(20px) !important;
-        border-radius: 20px;
-        padding: 2.5rem;
-        margin: 2rem 0;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
-    
-    .section-title {
-        font-size: 2rem;
-        font-weight: 600;
-        color: #1d1d1f;
-        margin-bottom: 1rem;
-        text-align: center;
-    }
-    
-    /* Button styling */
-    .stButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        padding: 0.75rem 2rem;
-        font-size: 1.1rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        width: 100%;
-    }
-    
-    .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
-    }
-    
-    /* Metric styling */
-    .metric-container {
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(20px);
-        border-radius: 16px;
-        padding: 1.5rem;
-        text-align: center;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-        border: 1px solid rgba(255,255,255,0.3);
-    }
-    
-    /* Results styling */
-    .results-section {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(20px);
-        border-radius: 20px;
-        padding: 2.5rem;
-        margin: 2rem 0;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        border: 1px solid rgba(255,255,255,0.2);
-    }
-    
-    /* Dialect samples styling */
-    .dialect-preview {
-        background: rgba(102, 126, 234, 0.05);
-        border-left: 4px solid #667eea;
-        border-radius: 8px;
-        padding: 1rem;
-        margin: 0.5rem 0;
-    }
-    
-    /* Fade in animation */
-    .fade-in {
-        animation: fadeIn 0.8s ease-in;
-    }
-    
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    
-    /* Progress bar styling */
-    .progress-container {
-        background: #f0f0f0;
-        border-radius: 10px;
-        height: 8px;
-        margin: 0.5rem 0;
-        overflow: hidden;
-    }
-    
-    .progress-bar {
-        background: linear-gradient(90deg, #667eea, #764ba2);
-        height: 100%;
-        border-radius: 10px;
-        transition: width 1s ease;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -492,7 +459,7 @@ def run_app():
                         </div>
                         """, unsafe_allow_html=True)
                     
-                    # Detailed Analysis - FIXED VERSION
+                    # Detailed Analysis
                     st.markdown('<h4 style="color: #1d1d1f; font-weight: 600; margin: 2rem 0 1rem 0;">Your Influence Breakdown</h4>', unsafe_allow_html=True)
                     
                     for dialect, score in sorted_scores:
@@ -509,7 +476,7 @@ def run_app():
                         </div>
                         """, unsafe_allow_html=True)
                     
-                    # Pattern Analysis - FIXED VERSION
+                    # Pattern Analysis
                     st.markdown('<h4 style="color: #1d1d1f; font-weight: 600; margin: 2rem 0 1rem 0;">🎯 Pattern Analysis</h4>', unsafe_allow_html=True)
                     
                     # Get meaningful words
