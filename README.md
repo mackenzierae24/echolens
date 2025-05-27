@@ -4,7 +4,189 @@
 
 EchoLens is an AI-powered tool that analyzes your linguistic patterns to identify ideological and social influences in your speech and writing.
 
-## Quick Start
+## 🔍 Application Overview
+
+### Application Type
+- **Web Application** built with Streamlit
+- **AI-powered text analysis tool** for linguistic pattern detection
+- **MVP/Proof of Concept** stage with basic similarity matching
+
+### Core Purpose
+EchoLens analyzes user writing samples to identify which ideological/social "dialects" influence their language patterns, helping users understand unconscious biases in their communication style.
+
+## 🎯 Current Functionality
+
+### Core Features
+- **Text Input** - Users paste writing samples
+- **Pattern Analysis** - Compares text against 5 dialect samples using word overlap
+- **Similarity Scoring** - Jaccard similarity (intersection/union of words)
+- **Visual Results** - Progress bars, metrics, pattern highlighting
+- **Detailed Breakdown** - Top matches, shared words, insights
+
+### Analysis Engine (src/analyzer/)
+- `simple_similarity_score()` - Basic word overlap calculation
+- `analyze_text_patterns()` - Compares user text vs dialect samples
+- Stop word filtering - Removes common words for meaningful analysis
+
+### UI Design Philosophy
+- **Apple-inspired aesthetic** - Glassmorphism, gradients, clean typography
+- **Simon Sinek "Why" approach** - Explains purpose before functionality
+- **Progressive disclosure** - Reveals insights gradually
+
+## 📁 Project Structure
+
+```
+echolens/
+├── main.py                    # Entry point - runs Streamlit app
+├── requirements.txt           # Python dependencies
+├── .env.example/.env         # Environment variables (API keys)
+├── README.md                 # Complete setup guide
+├── config/
+│   ├── __init__.py
+│   └── settings.py           # Configuration management
+├── src/
+│   ├── analyzer/             # Core analysis logic
+│   ├── dialects/             # Dialect management
+│   ├── ui/
+│   │   └── streamlit_app.py  # Main UI component
+│   └── utils/                # Utility functions
+├── data/
+│   └── dialects/
+│       └── samples/          # Pre-written dialect text samples
+│           ├── la_hippie.txt
+│           ├── crossfit_bro.txt
+│           ├── startup_techie.txt
+│           ├── christian_conservative.txt
+│           └── academic_scholar.txt
+├── scripts/
+│   └── setup_dialects.py    # Initialize dialect samples
+└── docs/                     # Documentation
+```
+
+## 🛠 Tech Stack
+
+### Primary Technologies
+- **Python 3.8+** - Backend language
+- **Streamlit** - Web framework for the UI
+- **OpenAI API** - For future AI-powered analysis (currently using placeholder)
+- **Pandas** - Data manipulation
+- **NumPy/SciPy** - Mathematical computations
+
+### Current Dependencies (requirements.txt)
+```
+streamlit>=1.32.0
+openai>=1.30.0
+scikit-learn>=1.4.0
+numpy>=1.24.0
+plotly>=5.15.0
+python-dotenv>=1.0.0
+pandas>=2.0.0
+matplotlib>=3.8.0
+scipy>=1.11.0
+```
+
+## 🔑 Key Files to Focus On
+
+### 1. Main Entry Point
+```python
+# main.py
+import streamlit as st
+from src.ui.streamlit_app import run_app
+
+if __name__ == "__main__":
+    run_app()
+```
+
+### 2. Core UI Component
+```python
+# src/ui/streamlit_app.py
+# Contains entire Streamlit interface with:
+# - Apple-inspired CSS styling
+# - Hero section with compelling messaging
+# - Analysis logic and results display
+# - All user interactions
+```
+
+### 3. Configuration
+```python
+# config/settings.py
+# Manages API keys, paths, analysis parameters
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+SAMPLES_DIR = 'data/dialects/samples'
+MIN_TEXT_LENGTH = 50
+```
+
+### 4. Dialect Samples
+```
+# data/dialects/samples/*.txt
+# 5 text files containing representative writing for each dialect:
+# - LA Hippie ("holding space", "vibration", "authentic self")
+# - CrossFit Bro ("crushing it", "PR", "macros", "grind mindset") 
+# - Startup Techie ("disruptive", "MVP", "scale", "iterate")
+# - Christian Conservative ("God's timing", "season", "kingdom work")
+# - Academic Scholar ("theoretical framework", "discourse analysis")
+```
+
+## 🎨 Current Design System
+
+### Color Palette
+- **Primary Gradient**: `#667eea` to `#764ba2`
+- **Background**: `#f5f7fa` to `#c3cfe2`
+- **Glassmorphism**: `rgba(255, 255, 255, 0.8)` with blur effects
+- **Text**: `#1d1d1f` (dark), `#424245` (medium), `#515154` (light)
+
+### Typography
+- **Font**: Inter (Google Fonts)
+- **Hero Title**: 3.5rem, gradient text effect
+- **Sections**: 2rem-2.5rem headings
+- **Body**: 1.1rem with 1.7 line height
+
+## 🔄 Current Analysis Workflow
+
+1. **User inputs text** (minimum 50 characters)
+2. **`load_dialect_samples()`** - Loads 5 dialect text files
+3. **`analyze_text_patterns()`** - Calculates similarity scores
+4. **`simple_similarity_score()`** - Word overlap using Jaccard similarity
+5. **Results display** - Metrics, progress bars, pattern analysis
+6. **Meaningful words extraction** - Filters stop words, shows common phrases
+
+## 🚀 Deployment Status
+
+### Current Hosting
+- **Streamlit Cloud** - Live web application
+- **GitHub Integration** - Auto-deploys from main branch
+- **Environment Variables** - API keys stored as Streamlit secrets in TOML format
+
+### Known Issues
+- **CSS Loading Problems** - Apple-inspired styling sometimes doesn't apply on Streamlit Cloud
+- **Placeholder Analysis** - Currently using basic word matching instead of AI embeddings
+
+## 🎯 Future Enhancement Opportunities
+
+### Immediate Improvements
+1. **Implement OpenAI embeddings** - Replace simple word matching
+2. **Add audio transcription** - Whisper API integration
+3. **Pattern detection** - Use GPT-4 for linguistic analysis
+4. **Fix CSS persistence** - Ensure styling works reliably
+
+### Advanced Features
+1. **Custom dialect creation** - User-defined communication patterns
+2. **Historical tracking** - Language evolution over time
+3. **Batch analysis** - Multiple text samples
+4. **Export functionality** - PDF reports, data export
+
+## 💡 Key Concepts to Understand
+
+### "Dialects" = Communication Patterns
+Not linguistic dialects, but ideological/social speech patterns that reveal influences from specific communities or thought leaders.
+
+### "Echo" Metaphor
+The idea that your words "echo" the voices/content you consume, revealing unconscious influence on your thinking.
+
+### MVP Philosophy
+Simple, functional proof-of-concept that demonstrates value before building complex features.
+
+## 🚀 Quick Start
 
 1. **Setup**
    ```bash
@@ -16,7 +198,6 @@ EchoLens is an AI-powered tool that analyzes your linguistic patterns to identif
 2. **Initialize Data**
    ```bash
    python scripts/setup_dialects.py
-   python scripts/generate_embeddings.py
    ```
 
 3. **Run the App**
@@ -24,37 +205,22 @@ EchoLens is an AI-powered tool that analyzes your linguistic patterns to identif
    streamlit run main.py
    ```
 
-## Features
+## ✨ Features
 
 - 🎯 Analyze text for ideological patterns
-- 🎤 Audio transcription support
 - 📊 Visual similarity reports
 - 🔄 Extensible dialect database
+- 🎨 Apple-inspired user interface
 
-## Project Structure
+## 🔧 Adding New Dialects
 
-- `src/analyzer/` - Core analysis engine
-- `src/ui/` - Streamlit interface
-- `data/dialects/` - Dialect samples and embeddings
-- `scripts/` - Setup and utility scripts
+Simply add a new `.txt` file to `data/dialects/samples/` and restart the application.
 
-## Adding New Dialects
+---
 
-Simply add a new `.txt` file to `data/dialects/samples/` and run:
-```bash
-python scripts/generate_embeddings.py
-```
+# 📖 Complete Setup Guide
 
-## License
-
-n/a
-
-
-# 🔍 EchoLens - Complete Setup Guide
-
-*"See what echoes through your words"*
-
-EchoLens is an AI-powered tool that analyzes your writing to reveal the hidden influences shaping how you think, speak, and see reality. This guide will walk you through every step to get EchoLens running on your computer, even if you're not technical.
+*For detailed, step-by-step instructions (especially for non-technical users), see below.*
 
 ## 📋 What You'll Need Before Starting
 
@@ -62,8 +228,6 @@ EchoLens is an AI-powered tool that analyzes your writing to reveal the hidden i
 - Internet connection
 - About 30-45 minutes
 - An OpenAI API key (we'll show you how to get one)
-
----
 
 ## 🚀 Step-by-Step Setup Guide
 
@@ -79,8 +243,6 @@ Before we start coding, you'll need an API key from OpenAI:
 6. **Save it somewhere safe** - you'll need it later
 
 💡 **Important:** Keep this key private and never share it publicly!
-
----
 
 ### Step 2: Download and Install Required Software
 
@@ -103,8 +265,6 @@ Before we start coding, you'll need an API key from OpenAI:
 2. **If you see a version number, skip to Step 3**
 3. **If not, go to [git-scm.com](https://git-scm.com)**
 4. **Download and install Git for Mac**
-
----
 
 ### Step 3: Create the EchoLens Project
 
@@ -131,8 +291,6 @@ Before we start coding, you'll need an API key from OpenAI:
 3. **Type:** `ls` and press Enter
 4. **You should see files like:** `main.py`, `requirements.txt`, `src/`, etc.
 
----
-
 ### Step 4: Open Project in VS Code
 
 1. **In VS Code, click:** File → Open Folder
@@ -145,8 +303,6 @@ Before we start coding, you'll need an API key from OpenAI:
 2. **Search for "Python"**
 3. **Install the "Python" extension** by Microsoft
 4. **Wait for it to install**
-
----
 
 ### Step 5: Set Up Your Python Environment
 
@@ -192,8 +348,6 @@ Before we start coding, you'll need an API key from OpenAI:
    ```
 2. **You should see a list** of installed packages including `streamlit`, `openai`, etc.
 
----
-
 ### Step 6: Add Your OpenAI API Key
 
 #### Create Your Environment File
@@ -217,8 +371,6 @@ Before we start coding, you'll need an API key from OpenAI:
 5. **Save the file** (Cmd + S)
 
 💡 **Important:** Make sure there are no spaces around the `=` sign!
-
----
 
 ### Step 7: Test Your Setup
 
@@ -258,8 +410,6 @@ Before we start coding, you'll need an API key from OpenAI:
 3. **Click "🧠 Reveal My Influences"**
 4. **You should see analysis results!**
 
----
-
 ### Step 8: Deploy to the Internet (Optional)
 
 #### Push to GitHub
@@ -291,8 +441,6 @@ Before we start coding, you'll need an API key from OpenAI:
 9. **Click "Save"**
 10. **Your app will be live at:** `https://your-app-name.streamlit.app`
 
----
-
 ## 🆘 Troubleshooting
 
 ### "Command not found" errors
@@ -315,28 +463,6 @@ Before we start coding, you'll need an API key from OpenAI:
 ### "Permission denied" errors
 - **Make sure you're in the echolens folder:** `cd ~/Desktop/echolens`
 
----
-
-## 📁 Project Structure
-
-```
-echolens/
-├── main.py                     # Main app file
-├── requirements.txt            # Required packages
-├── .env                       # Your API keys (keep private!)
-├── src/
-│   └── ui/
-│       └── streamlit_app.py   # Main interface
-├── data/
-│   └── dialects/
-│       └── samples/           # Dialect text samples
-├── scripts/
-│   └── setup_dialects.py     # Setup script
-└── docs/                      # Documentation
-```
-
----
-
 ## 🔄 Daily Usage
 
 Every time you want to work on EchoLens:
@@ -353,8 +479,6 @@ Every time you want to work on EchoLens:
    streamlit run main.py
    ```
 
----
-
 ## 🎯 What's Next?
 
 Now that you have EchoLens running, you can:
@@ -362,8 +486,6 @@ Now that you have EchoLens running, you can:
 - **Add new dialect samples** by creating `.txt` files in `data/dialects/samples/`
 - **Customize the analysis** by modifying the code
 - **Share your app** with others using the Streamlit Cloud URL
-
----
 
 ## 📞 Getting Help
 
@@ -373,19 +495,21 @@ If you run into issues:
 3. **Check that your virtual environment is activated** (`(venv)` should show in terminal)
 4. **Verify your API key is correct** in the `.env` file
 
----
-
 ## 🏁 Success Checklist
 
-✅ Python installed and working  
-✅ VS Code installed with Python extension  
-✅ Project downloaded and opened in VS Code  
-✅ Virtual environment created and activated  
-✅ Required packages installed  
-✅ OpenAI API key added to `.env` file  
-✅ Dialect samples initialized  
-✅ App runs locally at `http://localhost:8501`  
-✅ Analysis works when you input text  
-✅ (Optional) App deployed to Streamlit Cloud  
+- ✅ Python installed and working  
+- ✅ VS Code installed with Python extension  
+- ✅ Project downloaded and opened in VS Code  
+- ✅ Virtual environment created and activated  
+- ✅ Required packages installed  
+- ✅ OpenAI API key added to `.env` file  
+- ✅ Dialect samples initialized  
+- ✅ App runs locally at `http://localhost:8501`  
+- ✅ Analysis works when you input text  
+- ✅ (Optional) App deployed to Streamlit Cloud  
 
 **Congratulations! You now have EchoLens running and can start exploring the hidden influences in your language! 🎉**
+
+## 📄 License
+
+This project is open source. Feel free to contribute and improve EchoLens!
