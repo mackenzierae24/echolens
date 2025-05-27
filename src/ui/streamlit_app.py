@@ -427,25 +427,25 @@ def run_app():
                         </div>
                         """, unsafe_allow_html=True)
                     
-                    # Detailed Analysis
-                    st.markdown("#### Your Influence Breakdown")
+                    # Detailed Analysis - FIXED VERSION
+                    st.markdown('<h4 style="color: #1d1d1f; font-weight: 600; margin: 2rem 0 1rem 0;">Your Influence Breakdown</h4>', unsafe_allow_html=True)
                     
                     for dialect, score in sorted_scores:
                         percentage = score * 100
                         st.markdown(f"""
-                        <div style="margin: 1rem 0;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                <strong>{dialect}</strong>
-                                <span style="color: #667eea; font-weight: bold;">{percentage:.1f}%</span>
+                        <div style="background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                <span style="font-weight: 600; color: #1d1d1f; font-size: 1.1rem;">{dialect}</span>
+                                <span style="color: #667eea; font-weight: bold; font-size: 1.1rem;">{percentage:.1f}%</span>
                             </div>
-                            <div class="progress-container">
-                                <div class="progress-bar" style="width: {percentage}%;"></div>
+                            <div class="progress-container" style="height: 12px; background: #e8e8e8; border-radius: 6px; overflow: hidden;">
+                                <div class="progress-bar" style="width: {percentage}%; height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 6px; transition: width 1.5s ease;"></div>
                             </div>
                         </div>
                         """, unsafe_allow_html=True)
                     
-                    # Pattern Analysis - Prominent Section
-                    st.markdown("#### 🎯 Pattern Analysis")
+                    # Pattern Analysis - FIXED VERSION
+                    st.markdown('<h4 style="color: #1d1d1f; font-weight: 600; margin: 2rem 0 1rem 0;">🎯 Pattern Analysis</h4>', unsafe_allow_html=True)
                     
                     # Get meaningful words
                     user_words = set(user_text.lower().split())
@@ -460,12 +460,29 @@ def run_app():
                     else:
                         pattern_text = f"**Analysis:** Your text shows subtle patterns similar to {top_dialect} communication style."
                     
-                    st.info(pattern_text)
+                    # Custom styled info box
+                    st.markdown(f"""
+                    <div style="background: rgba(102, 126, 234, 0.1); border-left: 4px solid #667eea; border-radius: 8px; padding: 1.5rem; margin: 1rem 0; font-size: 1.1rem; color: #1d1d1f;">
+                        {pattern_text}
+                    </div>
+                    """, unsafe_allow_html=True)
                     
-                    # Show top 3 matches
-                    st.markdown("**Top 3 Dialect Matches:**")
+                    # Show top 3 matches with better styling
+                    st.markdown("""
+                    <div style="background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                        <h5 style="color: #1d1d1f; font-weight: 600; margin: 0 0 1rem 0;">Top 3 Dialect Matches:</h5>
+                    """, unsafe_allow_html=True)
+                    
                     for i, (dialect, score) in enumerate(sorted_scores[:3]):
-                        st.write(f"{i+1}. **{dialect}**: {score:.1%} similarity")
+                        st.markdown(f"""
+                        <div style="margin: 0.75rem 0; padding: 0.5rem 0;">
+                            <span style="color: #667eea; font-weight: bold; font-size: 1.1rem;">{i+1}.</span>
+                            <span style="font-weight: 600; color: #1d1d1f; margin-left: 0.5rem;">{dialect}:</span>
+                            <span style="color: #515154; margin-left: 0.5rem;">{score:.1%} similarity</span>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    
+                    st.markdown("</div>", unsafe_allow_html=True)
                     
                     # Insights
                     if top_score > 0.1:
