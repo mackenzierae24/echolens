@@ -4,8 +4,6 @@ EchoLens - Analyzes text for ideological and linguistic patterns
 import streamlit as st
 import os
 import sys
-import plotly.express as px
-import plotly.graph_objects as go
 import pandas as pd
 import time
 from typing import Dict, List, Tuple
@@ -254,7 +252,6 @@ def load_dialect_samples() -> Dict[str, str]:
     return samples
 
 def simple_similarity_score(text1: str, text2: str) -> float:
-    """Calculate similarity between two texts"""
     """
     Simple similarity calculation using word overlap
     This is a placeholder until we implement OpenAI embeddings
@@ -277,7 +274,7 @@ def analyze_text_patterns(user_text: str, dialects: Dict[str, str]) -> Dict[str,
         scores[dialect_name] = score
     return scores
 
-def main():
+def run_app():
     # Hero Section
     st.markdown("""
     <div class="hero-container fade-in">
