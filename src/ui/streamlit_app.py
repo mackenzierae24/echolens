@@ -16,260 +16,318 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for Apple-inspired design - Using st.markdown with unsafe_allow_html
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+# Load CSS first with more aggressive targeting
+def load_css():
+    st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-.stApp {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-}
+    /* Global overrides */
+    .stApp {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    }
 
-.main .block-container {
-    background: transparent !important;
-    padding-top: 2rem !important;
-    max-width: 1200px !important;
-}
+    .main .block-container {
+        background: transparent !important;
+        padding-top: 2rem !important;
+        max-width: 1200px !important;
+    }
 
-#MainMenu {visibility: hidden !important;}
-footer {visibility: hidden !important;}
-header {visibility: hidden !important;}
+    /* Hide Streamlit elements */
+    #MainMenu {visibility: hidden !important;}
+    footer {visibility: hidden !important;}
+    header {visibility: hidden !important;}
+    .stDeployButton {visibility: hidden !important;}
 
-.hero-container {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    border-radius: 24px;
-    margin: 2rem 0;
-    color: white;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-}
+    /* Force all markdown containers to be transparent */
+    div[data-testid="stMarkdownContainer"] {
+        background: transparent !important;
+    }
 
-.hero-title {
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    letter-spacing: -0.02em;
-    background: linear-gradient(45deg, #fff, #e0e7ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
+    div[data-testid="stVerticalBlock"] {
+        background: transparent !important;
+    }
 
-.hero-subtitle {
-    font-size: 1.4rem;
-    font-weight: 400;
-    opacity: 0.9;
-    margin-bottom: 2rem;
-    line-height: 1.5;
-}
+    div[data-testid="column"] {
+        background: transparent !important;
+    }
 
-.why-section {
-    background: rgba(255, 255, 255, 0.9) !important;
-    backdrop-filter: blur(20px) !important;
-    border-radius: 20px;
-    padding: 3rem;
-    margin: 2rem 0;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-}
+    /* Hero section styling with higher specificity */
+    .stMarkdown .hero-container,
+    div[data-testid="stMarkdownContainer"] .hero-container {
+        text-align: center !important;
+        padding: 4rem 2rem !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        border-radius: 24px !important;
+        margin: 2rem 0 !important;
+        color: white !important;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+    }
 
-.why-title {
-    font-size: 2.5rem;
-    font-weight: 600;
-    color: #1d1d1f;
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
+    .stMarkdown .hero-title,
+    div[data-testid="stMarkdownContainer"] .hero-title {
+        font-size: 3.5rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 1rem !important;
+        letter-spacing: -0.02em !important;
+        background: linear-gradient(45deg, #fff, #e0e7ff) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+        font-family: 'Inter', sans-serif !important;
+    }
 
-.why-text {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: #424245;
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto 2rem;
-}
+    .stMarkdown .hero-subtitle,
+    div[data-testid="stMarkdownContainer"] .hero-subtitle {
+        font-size: 1.4rem !important;
+        font-weight: 400 !important;
+        opacity: 0.9 !important;
+        margin-bottom: 2rem !important;
+        line-height: 1.5 !important;
+        color: white !important;
+        font-family: 'Inter', sans-serif !important;
+    }
 
-.insight-card {
-    background: rgba(255, 255, 255, 0.8) !important;
-    backdrop-filter: blur(20px) !important;
-    border-radius: 16px;
-    padding: 2rem;
-    margin: 1rem 0;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-    border: 1px solid rgba(255,255,255,0.3);
-    transition: all 0.3s ease;
-}
+    /* Why section styling */
+    .stMarkdown .why-section,
+    div[data-testid="stMarkdownContainer"] .why-section {
+        background: rgba(255, 255, 255, 0.9) !important;
+        backdrop-filter: blur(20px) !important;
+        border-radius: 20px !important;
+        padding: 3rem !important;
+        margin: 2rem 0 !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+        border: 1px solid rgba(255,255,255,0.2) !important;
+    }
 
-.insight-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.12);
-}
+    .stMarkdown .why-title,
+    div[data-testid="stMarkdownContainer"] .why-title {
+        font-size: 2.5rem !important;
+        font-weight: 600 !important;
+        color: #1d1d1f !important;
+        margin-bottom: 1.5rem !important;
+        text-align: center !important;
+        font-family: 'Inter', sans-serif !important;
+    }
 
-.insight-number {
-    font-size: 3rem;
-    font-weight: 700;
-    color: #667eea;
-    line-height: 1;
-    margin-bottom: 0.5rem;
-}
+    .stMarkdown .why-text,
+    div[data-testid="stMarkdownContainer"] .why-text {
+        font-size: 1.1rem !important;
+        line-height: 1.7 !important;
+        color: #424245 !important;
+        text-align: center !important;
+        max-width: 800px !important;
+        margin: 0 auto 2rem !important;
+        font-family: 'Inter', sans-serif !important;
+    }
 
-.insight-title {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #1d1d1f;
-    margin-bottom: 0.5rem;
-}
+    /* Insight cards */
+    .stMarkdown .insight-card,
+    div[data-testid="stMarkdownContainer"] .insight-card {
+        background: rgba(255, 255, 255, 0.8) !important;
+        backdrop-filter: blur(20px) !important;
+        border-radius: 16px !important;
+        padding: 2rem !important;
+        margin: 1rem 0 !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important;
+        border: 1px solid rgba(255,255,255,0.3) !important;
+        transition: all 0.3s ease !important;
+        height: 100% !important;
+    }
 
-.insight-text {
-    color: #515154;
-    line-height: 1.6;
-}
+    .stMarkdown .insight-card:hover,
+    div[data-testid="stMarkdownContainer"] .insight-card:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.12) !important;
+    }
 
-.input-section {
-    background: rgba(255, 255, 255, 0.9) !important;
-    backdrop-filter: blur(20px) !important;
-    border-radius: 20px;
-    padding: 2.5rem;
-    margin: 2rem 0;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
+    .stMarkdown .insight-number,
+    div[data-testid="stMarkdownContainer"] .insight-number {
+        font-size: 3rem !important;
+        font-weight: 700 !important;
+        color: #667eea !important;
+        line-height: 1 !important;
+        margin-bottom: 0.5rem !important;
+        font-family: 'Inter', sans-serif !important;
+    }
 
-.section-title {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #1d1d1f;
-    margin-bottom: 1rem;
-    text-align: center;
-}
+    .stMarkdown .insight-title,
+    div[data-testid="stMarkdownContainer"] .insight-title {
+        font-size: 1.3rem !important;
+        font-weight: 600 !important;
+        color: #1d1d1f !important;
+        margin-bottom: 0.5rem !important;
+        font-family: 'Inter', sans-serif !important;
+    }
 
-.stButton > button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 12px !important;
-    padding: 0.75rem 2rem !important;
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-    transition: all 0.3s ease !important;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
-    width: 100% !important;
-}
+    .stMarkdown .insight-text,
+    div[data-testid="stMarkdownContainer"] .insight-text {
+        color: #515154 !important;
+        line-height: 1.6 !important;
+        font-family: 'Inter', sans-serif !important;
+    }
 
-.stButton > button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5) !important;
-}
+    /* Input section */
+    .stMarkdown .input-section,
+    div[data-testid="stMarkdownContainer"] .input-section {
+        background: rgba(255, 255, 255, 0.9) !important;
+        backdrop-filter: blur(20px) !important;
+        border-radius: 20px !important;
+        padding: 2.5rem !important;
+        margin: 2rem 0 !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+    }
 
-.stTextArea > div > div > textarea {
-    background: rgba(255, 255, 255, 0.9) !important;
-    border: 2px solid rgba(102, 126, 234, 0.2) !important;
-    border-radius: 12px !important;
-    font-family: 'Inter', sans-serif !important;
-    font-size: 1rem !important;
-    padding: 1rem !important;
-}
+    .stMarkdown .section-title,
+    div[data-testid="stMarkdownContainer"] .section-title {
+        font-size: 2rem !important;
+        font-weight: 600 !important;
+        color: #1d1d1f !important;
+        margin-bottom: 1rem !important;
+        text-align: center !important;
+        font-family: 'Inter', sans-serif !important;
+    }
 
-.stTextArea > div > div > textarea:focus {
-    border-color: #667eea !important;
-    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2) !important;
-}
+    /* Button styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 0.75rem 2rem !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
+        width: 100% !important;
+        font-family: 'Inter', sans-serif !important;
+    }
 
-.metric-container {
-    background: rgba(255, 255, 255, 0.8) !important;
-    backdrop-filter: blur(20px) !important;
-    border-radius: 16px;
-    padding: 1.5rem;
-    text-align: center;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-    border: 1px solid rgba(255,255,255,0.3);
-    height: 100%;
-}
+    .stButton > button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5) !important;
+    }
 
-.results-section {
-    background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(20px) !important;
-    border-radius: 20px;
-    padding: 2.5rem;
-    margin: 2rem 0;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-}
+    /* Text area styling */
+    .stTextArea > div > div > textarea {
+        background: rgba(255, 255, 255, 0.9) !important;
+        border: 2px solid rgba(102, 126, 234, 0.2) !important;
+        border-radius: 12px !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 1rem !important;
+        padding: 1rem !important;
+    }
 
-.dialect-preview {
-    background: rgba(102, 126, 234, 0.05);
-    border-left: 4px solid #667eea;
-    border-radius: 8px;
-    padding: 1rem;
-    margin: 0.5rem 0;
-}
+    .stTextArea > div > div > textarea:focus {
+        border-color: #667eea !important;
+        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2) !important;
+    }
 
-.fade-in {
-    animation: fadeIn 0.8s ease-in;
-}
+    .stTextArea label {
+        font-family: 'Inter', sans-serif !important;
+        font-weight: 500 !important;
+        color: #1d1d1f !important;
+    }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+    /* Metric containers */
+    .stMarkdown .metric-container,
+    div[data-testid="stMarkdownContainer"] .metric-container {
+        background: rgba(255, 255, 255, 0.8) !important;
+        backdrop-filter: blur(20px) !important;
+        border-radius: 16px !important;
+        padding: 1.5rem !important;
+        text-align: center !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important;
+        border: 1px solid rgba(255,255,255,0.3) !important;
+        height: 100% !important;
+    }
 
-.progress-container {
-    background: #f0f0f0;
-    border-radius: 10px;
-    height: 8px;
-    margin: 0.5rem 0;
-    overflow: hidden;
-}
+    /* Results section */
+    .stMarkdown .results-section,
+    div[data-testid="stMarkdownContainer"] .results-section {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(20px) !important;
+        border-radius: 20px !important;
+        padding: 2.5rem !important;
+        margin: 2rem 0 !important;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+        border: 1px solid rgba(255,255,255,0.2) !important;
+    }
 
-.progress-bar {
-    background: linear-gradient(90deg, #667eea, #764ba2);
-    height: 100%;
-    border-radius: 10px;
-    transition: width 1s ease;
-}
+    /* Progress bars */
+    .progress-container {
+        background: #f0f0f0 !important;
+        border-radius: 10px !important;
+        height: 8px !important;
+        margin: 0.5rem 0 !important;
+        overflow: hidden !important;
+    }
 
-.stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4 {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-}
+    .progress-bar {
+        background: linear-gradient(90deg, #667eea, #764ba2) !important;
+        height: 100% !important;
+        border-radius: 10px !important;
+        transition: width 1s ease !important;
+    }
 
-/* Override Streamlit's default styling more aggressively */
-div[data-testid="stVerticalBlock"] > div {
-    background: transparent !important;
-}
+    /* Dialect preview */
+    .dialect-preview {
+        background: rgba(102, 126, 234, 0.05) !important;
+        border-left: 4px solid #667eea !important;
+        border-radius: 8px !important;
+        padding: 1rem !important;
+        margin: 0.5rem 0 !important;
+    }
 
-div[data-testid="stMarkdownContainer"] {
-    background: transparent !important;
-}
+    /* Animations */
+    .fade-in {
+        animation: fadeIn 0.8s ease-in !important;
+    }
 
-/* Ensure text areas have proper styling */
-.stTextArea label {
-    font-family: 'Inter', sans-serif !important;
-    font-weight: 500 !important;
-    color: #1d1d1f !important;
-}
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-}
+    /* Typography overrides */
+    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        color: #1d1d1f !important;
+    }
 
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-}
+    .stMarkdown p {
+        font-family: 'Inter', sans-serif !important;
+    }
 
-::-webkit-scrollbar-thumb {
-    background: rgba(102, 126, 234, 0.3);
-    border-radius: 4px;
-}
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
 
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(102, 126, 234, 0.5);
-}
-</style>
-""", unsafe_allow_html=True)
+    ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(102, 126, 234, 0.3);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(102, 126, 234, 0.5);
+    }
+
+    /* Force font loading */
+    * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# Load CSS immediately
+load_css()
 
 def load_dialect_samples() -> Dict[str, str]:
     """Load dialect samples"""
@@ -320,6 +378,9 @@ def analyze_text_patterns(user_text: str, dialects: Dict[str, str]) -> Dict[str,
     return scores
 
 def run_app():
+    # Reload CSS to ensure it's applied
+    load_css()
+    
     # Hero Section
     st.markdown("""
     <div class="hero-container fade-in">
