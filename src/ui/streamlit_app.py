@@ -53,87 +53,93 @@ def load_css():
         background: transparent !important;
     }
 
-    /* Hero section styling with higher specificity */
+    /* Hero section styling with responsive design */
     .stMarkdown .hero-container,
     div[data-testid="stMarkdownContainer"] .hero-container {
         text-align: center !important;
-        padding: 4rem 2rem !important;
+        padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem) !important;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        border-radius: 24px !important;
-        margin: 2rem 0 !important;
+        border-radius: clamp(16px, 3vw, 24px) !important;
+        margin: clamp(1rem, 2vw, 2rem) 0 !important;
         color: white !important;
         box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
     }
 
     .stMarkdown .hero-title,
     div[data-testid="stMarkdownContainer"] .hero-title {
-        font-size: 3.5rem !important;
+        font-size: clamp(2rem, 6vw, 3.5rem) !important;
         font-weight: 700 !important;
-        margin-bottom: 1rem !important;
+        margin-bottom: clamp(0.5rem, 2vw, 1rem) !important;
         letter-spacing: -0.02em !important;
         background: linear-gradient(45deg, #fff, #e0e7ff) !important;
         -webkit-background-clip: text !important;
         -webkit-text-fill-color: transparent !important;
         background-clip: text !important;
         font-family: 'Inter', sans-serif !important;
+        line-height: 1.2 !important;
     }
 
     .stMarkdown .hero-subtitle,
     div[data-testid="stMarkdownContainer"] .hero-subtitle {
-        font-size: 1.4rem !important;
+        font-size: clamp(1rem, 3vw, 1.4rem) !important;
         font-weight: 400 !important;
         opacity: 0.9 !important;
-        margin-bottom: 2rem !important;
+        margin-bottom: clamp(1rem, 3vw, 2rem) !important;
         line-height: 1.5 !important;
         color: white !important;
         font-family: 'Inter', sans-serif !important;
+        max-width: 90% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
     }
 
-    /* Why section styling */
+    /* Why section responsive styling */
     .stMarkdown .why-section,
     div[data-testid="stMarkdownContainer"] .why-section {
         background: rgba(255, 255, 255, 0.9) !important;
         backdrop-filter: blur(20px) !important;
-        border-radius: 20px !important;
-        padding: 3rem !important;
-        margin: 2rem 0 !important;
+        border-radius: clamp(16px, 3vw, 20px) !important;
+        padding: clamp(1.5rem, 4vw, 3rem) !important;
+        margin: clamp(1rem, 2vw, 2rem) 0 !important;
         box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
         border: 1px solid rgba(255,255,255,0.2) !important;
     }
 
     .stMarkdown .why-title,
     div[data-testid="stMarkdownContainer"] .why-title {
-        font-size: 2.5rem !important;
+        font-size: clamp(1.8rem, 5vw, 2.5rem) !important;
         font-weight: 600 !important;
         color: #1d1d1f !important;
-        margin-bottom: 1.5rem !important;
+        margin-bottom: clamp(1rem, 2vw, 1.5rem) !important;
         text-align: center !important;
         font-family: 'Inter', sans-serif !important;
     }
 
     .stMarkdown .why-text,
     div[data-testid="stMarkdownContainer"] .why-text {
-        font-size: 1.1rem !important;
+        font-size: clamp(1rem, 2.5vw, 1.1rem) !important;
         line-height: 1.7 !important;
         color: #424245 !important;
         text-align: center !important;
-        max-width: 800px !important;
-        margin: 0 auto 2rem !important;
+        max-width: min(800px, 90%) !important;
+        margin: 0 auto clamp(1rem, 2vw, 2rem) !important;
         font-family: 'Inter', sans-serif !important;
     }
 
-    /* Insight cards */
+    /* Responsive insight cards */
     .stMarkdown .insight-card,
     div[data-testid="stMarkdownContainer"] .insight-card {
         background: rgba(255, 255, 255, 0.8) !important;
         backdrop-filter: blur(20px) !important;
-        border-radius: 16px !important;
-        padding: 2rem !important;
-        margin: 1rem 0 !important;
+        border-radius: clamp(12px, 2vw, 16px) !important;
+        padding: clamp(1rem, 3vw, 2rem) !important;
+        margin: clamp(0.5rem, 1vw, 1rem) 0 !important;
         box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important;
         border: 1px solid rgba(255,255,255,0.3) !important;
         transition: all 0.3s ease !important;
         height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     .stMarkdown .insight-card:hover,
@@ -144,20 +150,20 @@ def load_css():
 
     .stMarkdown .insight-number,
     div[data-testid="stMarkdownContainer"] .insight-number {
-        font-size: 3rem !important;
+        font-size: clamp(2rem, 6vw, 3rem) !important;
         font-weight: 700 !important;
         color: #667eea !important;
         line-height: 1 !important;
-        margin-bottom: 0.5rem !important;
+        margin-bottom: clamp(0.25rem, 1vw, 0.5rem) !important;
         font-family: 'Inter', sans-serif !important;
     }
 
     .stMarkdown .insight-title,
     div[data-testid="stMarkdownContainer"] .insight-title {
-        font-size: 1.3rem !important;
+        font-size: clamp(1.1rem, 2.5vw, 1.3rem) !important;
         font-weight: 600 !important;
         color: #1d1d1f !important;
-        margin-bottom: 0.5rem !important;
+        margin-bottom: clamp(0.25rem, 1vw, 0.5rem) !important;
         font-family: 'Inter', sans-serif !important;
     }
 
@@ -166,37 +172,39 @@ def load_css():
         color: #515154 !important;
         line-height: 1.6 !important;
         font-family: 'Inter', sans-serif !important;
+        font-size: clamp(0.9rem, 2vw, 1rem) !important;
+        flex-grow: 1 !important;
     }
 
-    /* Input section */
+    /* Responsive input section */
     .stMarkdown .input-section,
     div[data-testid="stMarkdownContainer"] .input-section {
         background: rgba(255, 255, 255, 0.9) !important;
         backdrop-filter: blur(20px) !important;
-        border-radius: 20px !important;
-        padding: 2.5rem !important;
-        margin: 2rem 0 !important;
+        border-radius: clamp(16px, 3vw, 20px) !important;
+        padding: clamp(1.5rem, 4vw, 2.5rem) !important;
+        margin: clamp(1rem, 2vw, 2rem) 0 !important;
         box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
     }
 
     .stMarkdown .section-title,
     div[data-testid="stMarkdownContainer"] .section-title {
-        font-size: 2rem !important;
+        font-size: clamp(1.5rem, 4vw, 2rem) !important;
         font-weight: 600 !important;
         color: #1d1d1f !important;
-        margin-bottom: 1rem !important;
+        margin-bottom: clamp(0.5rem, 1vw, 1rem) !important;
         text-align: center !important;
         font-family: 'Inter', sans-serif !important;
     }
 
-    /* Button styling */
+    /* Responsive button styling */
     .stButton > button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         color: white !important;
         border: none !important;
-        border-radius: 12px !important;
-        padding: 0.75rem 2rem !important;
-        font-size: 1.1rem !important;
+        border-radius: clamp(8px, 2vw, 12px) !important;
+        padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 2rem) !important;
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem) !important;
         font-weight: 600 !important;
         transition: all 0.3s ease !important;
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
@@ -209,14 +217,15 @@ def load_css():
         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5) !important;
     }
 
-    /* Text area styling */
+    /* Responsive text area styling */
     .stTextArea > div > div > textarea {
         background: rgba(255, 255, 255, 0.9) !important;
         border: 2px solid rgba(102, 126, 234, 0.2) !important;
-        border-radius: 12px !important;
+        border-radius: clamp(8px, 2vw, 12px) !important;
         font-family: 'Inter', sans-serif !important;
-        font-size: 1rem !important;
-        padding: 1rem !important;
+        font-size: clamp(0.9rem, 2vw, 1rem) !important;
+        padding: clamp(0.75rem, 2vw, 1rem) !important;
+        min-height: clamp(120px, 20vh, 150px) !important;
     }
 
     .stTextArea > div > div > textarea:focus {
@@ -228,31 +237,108 @@ def load_css():
         font-family: 'Inter', sans-serif !important;
         font-weight: 500 !important;
         color: #1d1d1f !important;
+        font-size: clamp(0.9rem, 2vw, 1rem) !important;
     }
 
-    /* Metric containers */
+    /* Responsive metric containers */
     .stMarkdown .metric-container,
     div[data-testid="stMarkdownContainer"] .metric-container {
         background: rgba(255, 255, 255, 0.8) !important;
         backdrop-filter: blur(20px) !important;
-        border-radius: 16px !important;
-        padding: 1.5rem !important;
+        border-radius: clamp(12px, 2vw, 16px) !important;
+        padding: clamp(1rem, 2.5vw, 1.5rem) !important;
         text-align: center !important;
         box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important;
         border: 1px solid rgba(255,255,255,0.3) !important;
         height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
     }
 
-    /* Results section */
+    .stMarkdown .metric-container h2,
+    div[data-testid="stMarkdownContainer"] .metric-container h2 {
+        font-size: clamp(1.2rem, 3vw, 1.8rem) !important;
+        margin: clamp(0.25rem, 1vw, 0.5rem) 0 !important;
+    }
+
+    .stMarkdown .metric-container h3,
+    div[data-testid="stMarkdownContainer"] .metric-container h3 {
+        font-size: clamp(0.9rem, 2vw, 1.1rem) !important;
+    }
+
+    .stMarkdown .metric-container p,
+    div[data-testid="stMarkdownContainer"] .metric-container p {
+        font-size: clamp(0.8rem, 1.8vw, 0.9rem) !important;
+    }
+
+    /* Responsive results section */
     .stMarkdown .results-section,
     div[data-testid="stMarkdownContainer"] .results-section {
         background: rgba(255, 255, 255, 0.95) !important;
         backdrop-filter: blur(20px) !important;
-        border-radius: 20px !important;
-        padding: 2.5rem !important;
-        margin: 2rem 0 !important;
+        border-radius: clamp(16px, 3vw, 20px) !important;
+        padding: clamp(1.5rem, 4vw, 2.5rem) !important;
+        margin: clamp(1rem, 2vw, 2rem) 0 !important;
         box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
         border: 1px solid rgba(255,255,255,0.2) !important;
+    }
+
+    /* Responsive typography */
+    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        color: #1d1d1f !important;
+    }
+
+    .stMarkdown h4 {
+        font-size: clamp(1.1rem, 3vw, 1.3rem) !important;
+    }
+
+    .stMarkdown p {
+        font-family: 'Inter', sans-serif !important;
+        font-size: clamp(0.9rem, 2vw, 1rem) !important;
+        line-height: 1.6 !important;
+    }
+
+    /* Mobile-specific adjustments */
+    @media (max-width: 768px) {
+        .main .block-container {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
+        
+        .stMarkdown .hero-container,
+        div[data-testid="stMarkdownContainer"] .hero-container {
+            margin: 1rem 0 !important;
+        }
+        
+        .stMarkdown .why-section,
+        div[data-testid="stMarkdownContainer"] .why-section,
+        .stMarkdown .input-section,
+        div[data-testid="stMarkdownContainer"] .input-section,
+        .stMarkdown .results-section,
+        div[data-testid="stMarkdownContainer"] .results-section {
+            margin: 1rem 0 !important;
+        }
+        
+        .stMarkdown .insight-card,
+        div[data-testid="stMarkdownContainer"] .insight-card {
+            margin: 0.5rem 0 !important;
+        }
+    }
+
+    /* Tablet adjustments */
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .main .block-container {
+            max-width: 90% !important;
+        }
+    }
+
+    /* Large screen adjustments */
+    @media (min-width: 1400px) {
+        .main .block-container {
+            max-width: 1200px !important;
+        }
     }
 
     /* Progress bars */
