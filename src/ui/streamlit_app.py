@@ -16,8 +16,8 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for Apple-inspired design - Force load with st.html
-st.html("""
+# Custom CSS for Apple-inspired design - Using st.markdown with unsafe_allow_html
+st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -29,6 +29,7 @@ st.html("""
 .main .block-container {
     background: transparent !important;
     padding-top: 2rem !important;
+    max-width: 1200px !important;
 }
 
 #MainMenu {visibility: hidden !important;}
@@ -162,6 +163,20 @@ header {visibility: hidden !important;}
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5) !important;
 }
 
+.stTextArea > div > div > textarea {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 2px solid rgba(102, 126, 234, 0.2) !important;
+    border-radius: 12px !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 1rem !important;
+    padding: 1rem !important;
+}
+
+.stTextArea > div > div > textarea:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2) !important;
+}
+
 .metric-container {
     background: rgba(255, 255, 255, 0.8) !important;
     backdrop-filter: blur(20px) !important;
@@ -170,6 +185,7 @@ header {visibility: hidden !important;}
     text-align: center;
     box-shadow: 0 8px 25px rgba(0,0,0,0.08);
     border: 1px solid rgba(255,255,255,0.3);
+    height: 100%;
 }
 
 .results-section {
@@ -217,8 +233,43 @@ header {visibility: hidden !important;}
 .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4 {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
+
+/* Override Streamlit's default styling more aggressively */
+div[data-testid="stVerticalBlock"] > div {
+    background: transparent !important;
+}
+
+div[data-testid="stMarkdownContainer"] {
+    background: transparent !important;
+}
+
+/* Ensure text areas have proper styling */
+.stTextArea label {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500 !important;
+    color: #1d1d1f !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
+}
 </style>
-""")
+""", unsafe_allow_html=True)
 
 def load_dialect_samples() -> Dict[str, str]:
     """Load dialect samples"""
@@ -531,4 +582,4 @@ def run_app():
     """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
-   run_app()
+    run_app()
