@@ -13,7 +13,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 from config.settings import get_config
 from src.analyzer import create_embeddings_manager
-from src.analyzer.embeddings import get_openai_embedding, compute_similarity
+# from src.analyzer.embeddings import get_openai_embedding, compute_similarity
 from src.analyzer.pattern_analyzer import PatternAnalyzer, load_dialect_samples
 from src.analyzer.similarity_analyzer import SimilarityAnalyzer
 
