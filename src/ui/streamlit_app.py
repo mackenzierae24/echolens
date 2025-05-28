@@ -13,7 +13,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 from config.settings import get_config
 from src.analyzer import create_embeddings_manager, PatternAnalyzer
-# from src.analyzer.embeddings import get_openai_embedding, compute_similarity
+from src.analyzer.embeddings import initialize_embeddings_manager, get_openai_embedding, compute_similarity
+from src.analyzer.pattern_analyzer import PatternAnalyzer, load_dialect_samples
+from src.analyzer.similarity_analyzer import SimilarityAnalyzer
 
 # Configure page with Apple-inspired styling
 st.set_page_config(
@@ -601,7 +603,7 @@ def run_app():
 
                 # 1) Unpack the tuple: scores dict and the actual method used
                 scores, method_used = analyzer.analyze_text(user_text)
-
+                
                 # 2) Pass BOTH scores and method_used into get_detailed_analysis
                 detailed_analysis = analyzer.get_detailed_analysis(user_text, scores, method_used)
 
@@ -684,6 +686,22 @@ def run_app():
                         {pattern_text}
                     </div>
                     """, unsafe_allow_html=True)
+                    
+                    
+                    # ─── Quick TF-IDF Influence Demo ─────────────────────────────────
+                    # this sits right after your Pattern Analysis box  
+                    sim_analyzer = SimilarityAnalyzer(dialects)
+                    influence_scores, df_top_terms = sim_analyzer.analyze(
+                        user_text,
+                        top_n_terms=10
+                    )
+    
+                    st.subheader("🔍 TF-IDF Influence Scores")
+                    st.bar_chart(influence_scores)
+    
+                    st.subheader("📝 Top Terms by TF-IDF Weight")
+                    st.dataframe(df_top_terms)
+                    # ──   
                     
                     # Show top 3 matches with better styling
                     st.markdown("""
