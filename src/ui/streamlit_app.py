@@ -13,7 +13,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 from config.settings import get_config
 from src.analyzer import create_embeddings_manager
-from src.analyzer.pattern_analyzer import PatternAnalyzer, load_dialect_samples
+from src.analyzer.pattern_analyzer import PatternAnalyzer
+from src.dialects.loader import load_dialect_samples
 from src.analyzer.similarity_analyzer import SimilarityAnalyzer
 
 # Configure page with Apple-inspired styling
@@ -442,34 +443,6 @@ def initialize_analyzer():
     except Exception as e:
         st.error(f"❌ Error initializing AI: {str(e)}")
         return None
-
-def load_dialect_samples() -> Dict[str, str]:
-    """Load dialect samples"""
-    samples = {}
-    samples_dir = os.path.join('data', 'dialects', 'samples')
-    
-    if os.path.exists(samples_dir):
-        for filename in os.listdir(samples_dir):
-            if filename.endswith('.txt'):
-                dialect_name = filename.replace('.txt', '').replace('_', ' ').title()
-                try:
-                    with open(os.path.join(samples_dir, filename), 'r', encoding='utf-8') as f:
-                        samples[dialect_name] = f.read().strip()
-                except Exception as e:
-                    pass
-    
-    # Fallback samples if files don't exist
-    if not samples:
-        samples = {
-            "Silicon Valley Optimist": "We're building something truly transformative here. This could fundamentally reshape how people think about this space. We need to move fast and capture this opportunity while maintaining our core values.",
-            "Wellness Influencer": "I'm really holding space for this new chapter in my journey. The universe has been conspiring to bring me exactly what I need. I can feel my vibration shifting toward my highest self.",
-            "Fitness Enthusiast": "I'm absolutely crushing my goals right now. Hit a new PR yesterday and my nutrition is completely dialed in. The grind mindset is everything - you have to level up every single day.",
-            "Academic Researcher": "The theoretical framework employs post-structuralist discourse analysis to examine the underlying assumptions embedded within these linguistic patterns and their sociocultural implications.",
-            "Faith Community Leader": "I've been seeking wisdom on this decision and feel called to this new season. It's about walking in purpose and trusting the process, even when the path isn't completely clear."
-        }
-    
-    return samples
-
 
 
 
