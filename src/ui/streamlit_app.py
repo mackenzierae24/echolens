@@ -449,7 +449,7 @@ def initialize_analyzer():
 # In your run_app, pass embeddings_manager to analyze_text_patterns where needed
 def run_app():
     load_css() # Reload CSS to ensure it's applied
-    embeddings_manager = initialize_embeddings_manager() # Initialize embeddings manager
+    embeddings_manager = initialize_analyzer() # Initialize embeddings manager
     analyzer = PatternAnalyzer(embeddings_manager) # Create analyzer
     
     # Hero Section
