@@ -599,20 +599,20 @@ def run_app():
             with st.spinner(f"🔍 Running {analysis_method}..."):
                 time.sleep(1)
 
-                # 1) Unpack the tuple correctly
+                # 1) Unpack the tuple: scores dict and the actual method used
                 scores, method_used = analyzer.analyze_text(user_text)
 
                 # 2) Pass BOTH scores and method_used into get_detailed_analysis
-                detailed = analyzer.get_detailed_analysis(user_text, scores, method_used)
+                detailed_analysis = analyzer.get_detailed_analysis(user_text, scores, method_used)
 
-                # Now use detailed['sorted_scores'], detailed['top_dialect'], etc.
+                # Now use detailed_analysis['sorted_scores'], detailed_analysis['top_dialect'], etc.
                 if scores:
                     # Pull out what you need
-                    sorted_scores = detailed['sorted_scores']
-                    top_dialect   = detailed['top_dialect']
-                    top_score     = detailed['top_score']
-                    avg_score     = detailed['avg_score']
-                    uniqueness    = detailed['uniqueness']
+                    sorted_scores = detailed_analysis['sorted_scores']
+                    top_dialect   = detailed_analysis['top_dialect']
+                    top_score     = detailed_analysis['top_score']
+                    avg_score     = detailed_analysis['avg_score']
+                    uniqueness    = detailed_analysis['uniqueness']
 
                     # Choose display text/colors based on the actual method used
                     method_display = "🤖 AI Semantic Analysis" if method_used == 'embeddings' else "📝 Word Pattern Analysis"
