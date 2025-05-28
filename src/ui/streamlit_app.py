@@ -469,78 +469,14 @@ def load_dialect_samples() -> Dict[str, str]:
     
     return samples
 
-""" Old way to analyze similarity just based on word overlap """
-# def simple_similarity_score(text1: str, text2: str) -> float:
-#     """
-#     Simple similarity calculation using word overlap
-#     This is a placeholder until we implement OpenAI embeddings
-#     """
-#     words1 = set(text1.lower().split())
-#     words2 = set(text2.lower().split())
-#     intersection = len(words1.intersection(words2))
-#     union = len(words1.union(words2))
-#     return intersection / union if union > 0 else 0.0
 
-# def analyze_text_patterns(user_text: str, dialects: Dict[str, str]) -> Dict[str, float]:
-#     """Analyze user text against dialect samples"""
-#     if len(user_text.strip()) < 10:
-#         return {}
-#     scores = {}
-#     for dialect_name, dialect_text in dialects.items():
-#         score = simple_similarity_score(user_text, dialect_text)
-#         scores[dialect_name] = score
-#     return scores
 
-def simple_similarity_score(text1: str, text2: str) -> float:
-    """
-     Advanced similarity calculation using word overlap
-     with embeddings
-     """
-    if manager:
-        try:
-            emb1 = manager.get_embedding(text1) # The user's input text is converted into a vector representing its overall meaning.
-            emb2 = manager.get_embedding(text2) # The sample text for a specific dialect is converted into its meaning vector.
-            sim = manager.compute_similarity(emb1, emb2) 
-            """
-            If both embeddings are successfully created, it then calculates the similarity between these two embeddings. 
-            This is often done using a measure like cosine similarity, 
-            which determines how similar the directions of the two vectors are. 
-            A higher score (closer to 1.0) means higher similarity, while a score closer to 0.0 means less similarity.
-            """
-            return sim
-        except Exception as e:
-            pass
-            """
-            If the embeddings advanced method encounters an issue, 
-            it falls back to a simpler, more direct lexical comparison: 
-            how many words do the two texts have in common relative to their total unique words?
-            """
-    words1 = set(text1.lower().split())
-    words2 = set(text2.lower().split())
-    intersection = len(words1.intersection(words2))
-    union = len(words1.union(words2))
-    return intersection / union if union > 0 else 0.0
-
-def analyze_text_patterns(user_text: str, dialects: Dict[str, str], manager=None) -> Dict[str, float]:
-    """Analyze user text against dialect samples"""
-    if len(user_text.strip()) < 10:
-        return {}
-    scores = {}
-    for dialect_name, dialect_text in dialects.items():
-        score = simple_similarity_score(user_text, dialect_text, manager=manager)
-        scores[dialect_name] = score
-    return scores
 
 # In your run_app, pass embeddings_manager to analyze_text_patterns where needed
 def run_app():
-    # Reload CSS to ensure it's applied
-    load_css()
-
-    # Initialize embeddings manager
-    embeddings_manager = initialize_embeddings_manager()
-    
-    # Create analyzer
-    analyzer = PatternAnalyzer(embeddings_manager)
+    load_css() # Reload CSS to ensure it's applied
+    embeddings_manager = initialize_embeddings_manager() # Initialize embeddings manager
+    analyzer = PatternAnalyzer(embeddings_manager) # Create analyzer
     
     # Hero Section
     st.markdown("""
@@ -659,23 +595,33 @@ def run_app():
         if len(user_text.strip()) < 50:
             st.warning("⚠️ Please enter at least 50 characters for meaningful analysis.")
         else:
-            # Loading animation with dynamic message
             analysis_method = "AI-powered semantic analysis" if embeddings_manager else "pattern matching analysis"
             with st.spinner(f"🔍 Running {analysis_method}..."):
-                time.sleep(1)  # Dramatic pause for effect
-                
-                # Run analysis
-                scores = analyzer.analyze_text(user_text)
-                detailed_analysis = analyzer.get_detailed_analysis(user_text, method_used)
-                
+                time.sleep(1)
+
+                # 1) Unpack the tuple correctly
+                scores, method_used = analyzer.analyze_text(user_text)
+
+                # 2) Pass BOTH scores and method_used into get_detailed_analysis
+                detailed = analyzer.get_detailed_analysis(user_text, scores, method_used)
+
+                # Now use detailed['sorted_scores'], detailed['top_dialect'], etc.
                 if scores:
-                    sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-                    top_dialect, top_score = sorted_scores[0]
-                    
+                    # Pull out what you need
+                    sorted_scores = detailed['sorted_scores']
+                    top_dialect   = detailed['top_dialect']
+                    top_score     = detailed['top_score']
+                    avg_score     = detailed['avg_score']
+                    uniqueness    = detailed['uniqueness']
+
+                    # Choose display text/colors based on the actual method used
+                    method_display = "🤖 AI Semantic Analysis" if method_used == 'embeddings' else "📝 Word Pattern Analysis"
+                    method_color   = "#10b981" if method_used == 'embeddings' else "#f59e0b"
+                
                     st.markdown("""
                     <div class="results-section fade-in">
                         <div class="section-title">Your Linguistic Reflection</div>
-                    </div>
+                     </div>
                     """, unsafe_allow_html=True)
                     
                     # Analysis method indicator
