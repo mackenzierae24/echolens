@@ -15,7 +15,7 @@ from config.settings import get_config
 from src.analyzer import create_embeddings_manager
 from src.analyzer.pattern_analyzer import PatternAnalyzer
 from src.dialects.loader import load_dialect_samples
-from src.analyzer.similarity_analyzer import SimilarityAnalyzer
+#from src.analyzer.similarity_analyzer import SimilarityAnalyzer
 
 # Configure page with Apple-inspired styling
 st.set_page_config(
@@ -662,17 +662,17 @@ def run_app():
                     
                     # ─── Quick TF-IDF Influence Demo ─────────────────────────────────
                     # this sits right after your Pattern Analysis box  
-                    sim_analyzer = SimilarityAnalyzer(dialects)
-                    influence_scores, df_top_terms = sim_analyzer.analyze(
-                        user_text,
-                        top_n_terms=10
-                    )
+                    #sim_analyzer = SimilarityAnalyzer(dialects)
+                    #influence_scores, df_top_terms = sim_analyzer.analyze(
+                    #    user_text,
+                    #    top_n_terms=10
+                    #)
     
-                    st.subheader("🔍 TF-IDF Influence Scores")
-                    st.bar_chart(influence_scores)
+                    #st.subheader("🔍 TF-IDF Influence Scores")
+                    #st.bar_chart(influence_scores)
     
-                    st.subheader("📝 Top Terms by TF-IDF Weight")
-                    st.dataframe(df_top_terms)
+                    #st.subheader("📝 Top Terms by TF-IDF Weight")
+                    #st.dataframe(df_top_terms)
                     # ──   
                     
                     # Show top 3 matches with better styling
